@@ -2,7 +2,6 @@ package com.rumoroflight
 
 import android.os.Bundle
 import java.util.Timer
-import java.util.Timer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
