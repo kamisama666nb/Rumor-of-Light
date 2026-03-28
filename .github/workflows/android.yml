@@ -15,19 +15,19 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        # 暂时关闭缓存，防止旧版本的错误文件干扰
-        # cache: gradle 
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        # 强制指定版本，不使用环境默认的 9.4.1
         gradle-version: 8.2
 
+    - name: Regenerate Wrapper
+      # 关键：这行会利用服务器自带的 gradle 生成缺失的 .jar 和脚本
+      run: gradle wrapper --gradle-version 8.2
+
     - name: Build APK
-      run: |
-        chmod +x gradlew
-        ./gradlew assembleDebug --stacktrace
+      # 这一步会自动处理权限并编译
+      run: ./gradlew assembleDebug
 
     - name: Upload APK
       if: success()
