@@ -1,6 +1,5 @@
 package com.rumoroflight.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,16 +7,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.rumoroflight.model.JournalEntry
 
 @Composable
 fun JournalScreen() {
-    // 模拟数据
     val entries = listOf(
-        JournalEntry(1, "2026.03.28", "今天完成了 Rumor of Light 的番茄钟模块，感觉很有成就感。", "🌿"),
-        JournalEntry(2, "2026.03.27", "在手机上写代码虽然慢，但看着 Actions 编译成功真的很开心。", "😊")
+        JournalEntry(1, "2026.03.28", "Rumor of Light 编译环境终于跑通了。", "🌿"),
+        JournalEntry(2, "2026.03.27", "在手机上坚持开发，这就是光的力量。", "😊")
     )
 
     LazyColumn(
@@ -54,4 +50,3 @@ fun JournalCard(entry: JournalEntry) {
         }
     }
 }
-
