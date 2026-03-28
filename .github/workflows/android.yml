@@ -3,8 +3,6 @@ name: Android CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -17,25 +15,22 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
+        # 暂时关闭缓存，防止旧版本的错误文件干扰
+        # cache: gradle 
 
-    # 使用专门的 Gradle Action，它会自动处理 Gradle 的安装
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: wrapper # 尝试使用项目中定义的版本，如果找不到会报错，所以我们下一步强制生成
+        # 强制指定版本，不使用环境默认的 9.4.1
+        gradle-version: 8.2
 
-    # 强制生成 Wrapper 文件
-    - name: Generate Gradle Wrapper
-      run: gradle wrapper --gradle-version 8.2
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
+    - name: Build APK
+      run: |
+        chmod +x gradlew
+        ./gradlew assembleDebug --stacktrace
 
     - name: Upload APK
+      if: success()
       uses: actions/upload-artifact@v4
       with:
         name: RumorOfLight-debug
