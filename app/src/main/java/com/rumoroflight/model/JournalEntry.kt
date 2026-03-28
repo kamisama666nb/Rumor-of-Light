@@ -1,4 +1,4 @@
-package com.rumoroflight.model
+package com.rumoroflight.ui.components
 
 data class JournalEntry(
     val id: Int,
