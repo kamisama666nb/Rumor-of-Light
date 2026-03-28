@@ -23,28 +23,28 @@ val Newsreader = FontFamily(
 )
 
 val Typography = Typography(
-    [span_2](start_span)// 大标题：Studio Settings[span_2](end_span)
+    // 大标题：Studio Settings
     displayLarge = TextStyle(
         fontFamily = Newsreader,
         fontWeight = FontWeight.Normal,
         fontSize = 34.sp,
         letterSpacing = (-0.5).sp
     ),
-    [span_3](start_span)// Logo：Rumor of Light[span_3](end_span)
+    // Logo：Rumor of Light
     titleLarge = TextStyle(
         fontFamily = Newsreader,
         fontWeight = FontWeight.Medium,
         fontStyle = FontStyle.Italic,
         fontSize = 22.sp
     ),
-    [span_4](start_span)// 正文：Manrope[span_4](end_span)
+    // 正文：Manrope
     bodyLarge = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
-    [span_5](start_span)// 标签文字：Uppercase tracking[span_5](end_span)
+    // 标签文字：Uppercase tracking
     labelSmall = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Medium,
