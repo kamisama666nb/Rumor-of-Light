@@ -19,11 +19,15 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
+    # 使用专门的 Gradle Action，它会自动处理 Gradle 的安装
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: wrapper # 尝试使用项目中定义的版本，如果找不到会报错，所以我们下一步强制生成
 
-    - name: Generate Wrapper
-      run: gradle wrapper
+    # 强制生成 Wrapper 文件
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.2
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
