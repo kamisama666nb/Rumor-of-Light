@@ -45,14 +45,13 @@ fun MainScreen() {
             )
         },
         bottomBar = { CustomBottomBar() }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
-                .verticalScroll(rememberScrollState())
-                .fillMaxSize()
-        ) {
+     ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            // 调用番茄钟界面
+            PomodoroScreen(viewModel = timerViewModel)
+        }
+    }
+}
             Spacer(Modifier.height(32.dp))
             [span_13](start_span)Text("Studio Settings", style = MaterialTheme.typography.displayLarge)[span_13](end_span)
             Text(
