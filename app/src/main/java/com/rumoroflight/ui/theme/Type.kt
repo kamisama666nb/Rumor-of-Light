@@ -2,7 +2,7 @@ package com.rumoroflight.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.Font         // 必须有这一行
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -23,28 +23,24 @@ val Newsreader = FontFamily(
 )
 
 val Typography = Typography(
-    // 大标题：Studio Settings
     displayLarge = TextStyle(
         fontFamily = Newsreader,
         fontWeight = FontWeight.Normal,
         fontSize = 34.sp,
         letterSpacing = (-0.5).sp
     ),
-    // Logo：Rumor of Light
     titleLarge = TextStyle(
         fontFamily = Newsreader,
         fontWeight = FontWeight.Medium,
         fontStyle = FontStyle.Italic,
         fontSize = 22.sp
     ),
-    // 正文：Manrope
     bodyLarge = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp
     ),
-    // 标签文字：Uppercase tracking
     labelSmall = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Medium,
