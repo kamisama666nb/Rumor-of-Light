@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
-// === Light Theme - 米白纸张美学 ===
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
@@ -44,18 +43,9 @@ private val LightColorScheme = lightColorScheme(
     
     inverseSurface = InverseSurface,
     inverseOnSurface = InverseOnSurface,
-    inversePrimary = InversePrimary,
-    
-    surfaceBright = SurfaceBright,
-    surfaceDim = SurfaceDim,
-    surfaceContainer = SurfaceContainer,
-    surfaceContainerHigh = SurfaceContainerHigh,
-    surfaceContainerHighest = SurfaceContainerHighest,
-    surfaceContainerLow = SurfaceContainerLow,
-    surfaceContainerLowest = SurfaceContainerLowest
+    inversePrimary = InversePrimary
 )
 
-// === Dark Theme - 午夜模式 (Phase 2 实现) ===
 private val DarkColorScheme = darkColorScheme(
     primary = DarkPrimary,
     onPrimary = DarkOnPrimary,
@@ -78,25 +68,14 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = DarkOnSurface
 )
 
-// === Shape System - 圆角设计系统 ===
 val AppShapes = Shapes(
-    extraSmall = RoundedCornerShape(8.dp),   // 小组件
-    small = RoundedCornerShape(12.dp),       // 按钮、芯片
-    medium = RoundedCornerShape(16.dp),      // 卡片
-    large = RoundedCornerShape(24.dp),       // 对话框
-    extraLarge = RoundedCornerShape(32.dp)   // 底部导航栏
+    extraSmall = RoundedCornerShape(8.dp),
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(16.dp),
+    large = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(32.dp)
 )
 
-/**
- * Rumor of Light 主题
- * 
- * 设计语言: Material Design 3 + 个人化美学
- * 核心原则: 
- *  - 米白纸张质感
- *  - Newsreader 衬线标题 + Manrope 无衬线正文
- *  - 低对比度高雅致
- *  - 拒绝商业化视觉疲劳
- */
 @Composable
 fun RumorOfLightTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
