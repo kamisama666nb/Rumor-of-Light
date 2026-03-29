@@ -41,13 +41,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// === 导航枚举 ===
 enum class Screen {
-    Library,    // 知识库 (Phase 2)
-    Journal,    // 日记本
-    Focus,      // 番茄钟
-    Music,      // 音乐 (Phase 3)
-    Profile     // 个人设置
+    Library,
+    Journal,
+    Focus,
+    Music,
+    Profile
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +65,7 @@ fun MainScreen(viewModel: TimerViewModel) {
                     ) 
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /* 菜单抽屉 */ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Outlined.Menu,
                             contentDescription = "Menu",
@@ -75,7 +74,7 @@ fun MainScreen(viewModel: TimerViewModel) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* 搜索功能 */ }) {
+                    IconButton(onClick = { }) {
                         Icon(
                             imageVector = Icons.Outlined.Search,
                             contentDescription = "Search",
@@ -116,7 +115,6 @@ fun MainScreen(viewModel: TimerViewModel) {
     }
 }
 
-// === 底部导航栏 - KnowledgeVault 风格 ===
 @Composable
 fun BottomNavigationBar(
     currentScreen: Screen,
@@ -124,6 +122,203 @@ fun BottomNavigationBar(
 ) {
     Surface(
         modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 8.dp,
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                spotColor = Color.Black.copy(alpha = 0.03f)
+            ),
+        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+        tonalElevation = 3.dp
+    ) {
+        NavigationBar(
+            containerColor = Color.Transparent,
+            modifier = Modifier
+                .height(80.dp)
+                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+        ) {
+            BottomNavItem(
+                selected = currentScreen == Screen.Library,
+                onClick = { onScreenSelected(Screen.Library) },
+                icon = Icons.Filled.Book,
+                selectedIcon = Icons.Filled.Book,
+                label = "LIBRARY"
+            )
+            
+            BottomNavItem(
+                selected = currentScreen == Screen.Journal,
+                onClick = { onScreenSelected(Screen.Journal) },
+                icon = Icons.Filled.Edit,
+                selectedIcon = Icons.Filled.Edit,
+                label = "JOURNAL"
+            )
+            
+            BottomNavItem(
+                selected = currentScreen == Screen.Focus,
+                onClick = { onScreenSelected(Screen.Focus) },
+                icon = Icons.Filled.Timer,
+                selectedIcon = Icons.Filled.Timer,
+                label = "FOCUS",
+                isPrimary = true
+            )
+            
+            BottomNavItem(
+                selected = currentScreen == Screen.Music,
+                onClick = { onScreenSelected(Screen.Music) },
+                icon = Icons.Filled.MusicNote,
+                selectedIcon = Icons.Filled.MusicNote,
+                label = "MUSIC"
+            )
+            
+            BottomNavItem(
+                selected = currentScreen == Screen.Profile,
+                onClick = { onScreenSelected(Screen.Profile) },
+                icon = Icons.Filled.Person,
+                selectedIcon = Icons.Filled.Person,
+                label = "PROFILE"
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.BottomNavItem(
+    selected: Boolean,
+    onClick: () -> Unit,
+    icon: ImageVector,
+    selectedIcon: ImageVector,
+    label: String,
+    isPrimary: Boolean = false
+) {
+    NavigationBarItem(
+        selected = selected,
+        onClick = onClick,
+        icon = {
+            Icon(
+                imageVector = if (selected) selectedIcon else icon,
+                contentDescription = label,
+                modifier = Modifier.size(if (isPrimary) 26.dp else 24.dp)
+            )
+        },
+        label = {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
+            )
+        },
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = MaterialTheme.colorScheme.primary,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
+            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+        )
+    )
+}
+
+@Composable
+fun LibraryPlaceholder() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Book,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+            )
+            Text(
+                text = "Knowledge Library",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = "Coming in Phase 2\nRSS Feeds • Web Clippings • Notes",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun MusicPlaceholder() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.MusicNote,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
+            )
+            Text(
+                text = "The Sonic Aura",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = "Coming in Phase 3\nNetease Cloud Music Integration",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfilePlaceholder() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Person,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
+            )
+            Text(
+                text = "Digital Identity",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = "Settings • Integrations • AI Config",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}        modifier = Modifier
             .fillMaxWidth()
             .shadow(
                 elevation = 8.dp,
