@@ -22,9 +22,8 @@ val NewsreaderFontFamily = FontFamily(
     Font(R.font.newsreader_mediumitalic, FontWeight.Medium, FontStyle.Italic)
 )
 
-// Material 3 Typography - 遵循 Rumor of Light 设计系统
+// Material 3 Typography
 val AppTypography = Typography(
-    // 大标题 - Newsreader 衬线字体
     displayLarge = TextStyle(
         fontFamily = NewsreaderFontFamily,
         fontWeight = FontWeight.Normal,
@@ -39,8 +38,6 @@ val AppTypography = Typography(
         letterSpacing = 0.sp,
         lineHeight = 36.sp
     ),
-    
-    // 标题 - Newsreader 斜体
     titleLarge = TextStyle(
         fontFamily = NewsreaderFontFamily,
         fontWeight = FontWeight.Medium,
@@ -56,8 +53,6 @@ val AppTypography = Typography(
         letterSpacing = 0.15.sp,
         lineHeight = 24.sp
     ),
-    
-    // 正文 - Manrope 无衬线
     bodyLarge = TextStyle(
         fontFamily = ManropeFontFamily,
         fontWeight = FontWeight.Normal,
@@ -79,8 +74,6 @@ val AppTypography = Typography(
         letterSpacing = 0.4.sp,
         lineHeight = 16.sp
     ),
-    
-    // 标签 - Manrope 全大写小字号
     labelLarge = TextStyle(
         fontFamily = ManropeFontFamily,
         fontWeight = FontWeight.Medium,
