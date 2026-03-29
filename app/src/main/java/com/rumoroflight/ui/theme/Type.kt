@@ -19,7 +19,7 @@ val ManropeFontFamily = FontFamily(
 // 定义 Newsreader 字体族 (衬线标题)
 val NewsreaderFontFamily = FontFamily(
     Font(R.font.newsreader_regular, FontWeight.Normal),
-    Font(R.font.newsreader_mediumitalic, FontWeight.Medium, FontStyle.Italic)
+    Font(R.font.newsreader_medium_italic, FontWeight.Medium, FontStyle.Italic)
 )
 
 // Material 3 Typography
