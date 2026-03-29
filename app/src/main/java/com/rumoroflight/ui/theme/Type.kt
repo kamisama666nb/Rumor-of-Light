@@ -11,7 +11,7 @@ import com.rumoroflight.R
 
 // 定义 Manrope 字体族 (无衬线正文)
 val ManropeFontFamily = FontFamily(
-    Font(R.font.manrope_regular6, FontWeight.Normal),
+    Font(R.font.manrope_regular, FontWeight.Normal),
     Font(R.font.manrope_medium_5, FontWeight.Medium),
     Font(R.font.manrope_semibold_7, FontWeight.SemiBold)
 )
