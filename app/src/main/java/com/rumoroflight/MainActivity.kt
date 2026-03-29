@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,56 +56,41 @@ fun MainScreen(viewModel: TimerViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
-                        text = "Rumor of Light",
+                        "Rumor of Light",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium
-                    ) 
+                    )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Menu,
-                            contentDescription = "Menu",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Outlined.Menu, contentDescription = null)
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = "Search",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Outlined.Search, contentDescription = null)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
-                )
+                }
             )
         },
-        bottomBar = { 
-            BottomNavigationBar(currentScreen) { selected -> 
-                currentScreen = selected 
-            } 
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
+        bottomBar = {
+            BottomNavigationBar(currentScreen) {
+                currentScreen = it
+            }
+        }
+    ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(padding)
         ) {
-            Crossfade(
-                targetState = currentScreen,
-                label = "ScreenTransition"
-            ) { screen ->
+            Crossfade(targetState = currentScreen, label = "") { screen ->
                 when (screen) {
                     Screen.Library -> LibraryPlaceholder()
                     Screen.Journal -> JournalScreen()
-                    Screen.Focus -> PomodoroScreen(viewModel = viewModel)
+                    Screen.Focus -> PomodoroScreen(viewModel)
                     Screen.Music -> MusicPlaceholder()
                     Screen.Profile -> ProfilePlaceholder()
                 }
@@ -123,60 +107,43 @@ fun BottomNavigationBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                spotColor = Color.Black.copy(alpha = 0.03f)
-            ),
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
-        tonalElevation = 3.dp
+            .shadow(8.dp, RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)),
+        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
     ) {
         NavigationBar(
-            containerColor = Color.Transparent,
-            modifier = Modifier
-                .height(80.dp)
-                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+            containerColor = MaterialTheme.colorScheme.surface,
+            modifier = Modifier.height(80.dp)
         ) {
             BottomNavItem(
-                selected = currentScreen == Screen.Library,
-                onClick = { onScreenSelected(Screen.Library) },
-                icon = Icons.Filled.Book,
-                selectedIcon = Icons.Filled.Book,
-                label = "LIBRARY"
+                currentScreen == Screen.Library,
+                { onScreenSelected(Screen.Library) },
+                Icons.Outlined.AutoStories,
+                "LIBRARY"
             )
-            
             BottomNavItem(
-                selected = currentScreen == Screen.Journal,
-                onClick = { onScreenSelected(Screen.Journal) },
-                icon = Icons.Filled.Edit,
-                selectedIcon = Icons.Filled.Edit,
-                label = "JOURNAL"
+                currentScreen == Screen.Journal,
+                { onScreenSelected(Screen.Journal) },
+                Icons.Outlined.EditNote,
+                "JOURNAL"
             )
-            
             BottomNavItem(
-                selected = currentScreen == Screen.Focus,
-                onClick = { onScreenSelected(Screen.Focus) },
-                icon = Icons.Filled.Timer,
-                selectedIcon = Icons.Filled.Timer,
-                label = "FOCUS",
+                currentScreen == Screen.Focus,
+                { onScreenSelected(Screen.Focus) },
+                Icons.Outlined.Timer,
+                "FOCUS",
                 isPrimary = true
             )
-            
             BottomNavItem(
-                selected = currentScreen == Screen.Music,
-                onClick = { onScreenSelected(Screen.Music) },
-                icon = Icons.Filled.MusicNote,
-                selectedIcon = Icons.Filled.MusicNote,
-                label = "MUSIC"
+                currentScreen == Screen.Music,
+                { onScreenSelected(Screen.Music) },
+                Icons.Outlined.LibraryMusic,
+                "MUSIC"
             )
-            
             BottomNavItem(
-                selected = currentScreen == Screen.Profile,
-                onClick = { onScreenSelected(Screen.Profile) },
-                icon = Icons.Filled.Person,
-                selectedIcon = Icons.Filled.Person,
-                label = "PROFILE"
+                currentScreen == Screen.Profile,
+                { onScreenSelected(Screen.Profile) },
+                Icons.Outlined.Fingerprint,
+                "PROFILE"
             )
         }
     }
@@ -187,7 +154,6 @@ fun RowScope.BottomNavItem(
     selected: Boolean,
     onClick: () -> Unit,
     icon: ImageVector,
-    selectedIcon: ImageVector,
     label: String,
     isPrimary: Boolean = false
 ) {
@@ -196,234 +162,53 @@ fun RowScope.BottomNavItem(
         onClick = onClick,
         icon = {
             Icon(
-                imageVector = if (selected) selectedIcon else icon,
+                icon,
                 contentDescription = label,
                 modifier = Modifier.size(if (isPrimary) 26.dp else 24.dp)
             )
         },
         label = {
             Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
+                label,
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium
             )
-        },
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.primary,
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-        )
+        }
     )
 }
 
 @Composable
 fun LibraryPlaceholder() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Book,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "Knowledge Library",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Coming in Phase 2\nRSS Feeds • Web Clippings • Notes",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
+    PlaceholderScreen(
+        icon = Icons.Outlined.AutoStories,
+        title = "Knowledge Library",
+        desc = "Coming in Phase 2\nRSS • Notes"
+    )
 }
 
 @Composable
 fun MusicPlaceholder() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.MusicNote,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "The Sonic Aura",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Coming in Phase 3\nNetease Cloud Music Integration",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
+    PlaceholderScreen(
+        icon = Icons.Outlined.LibraryMusic,
+        title = "The Sonic Aura",
+        desc = "Coming in Phase 3\nMusic Integration"
+    )
 }
 
 @Composable
 fun ProfilePlaceholder() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Person,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "Digital Identity",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Settings • Integrations • AI Config",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(
-                elevation = 8.dp,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                spotColor = Color.Black.copy(alpha = 0.03f)
-            ),
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
-        tonalElevation = 3.dp
-    ) {
-        NavigationBar(
-            containerColor = Color.Transparent,
-            modifier = Modifier
-                .height(80.dp)
-                .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-        ) {
-            // Library
-            BottomNavItem(
-                selected = currentScreen == Screen.Library,
-                onClick = { onScreenSelected(Screen.Library) },
-                icon = Icons.Outlined.AutoStories,
-                selectedIcon = Icons.Filled.AutoStories,
-                label = "LIBRARY"
-            )
-            
-            // Journal
-            BottomNavItem(
-                selected = currentScreen == Screen.Journal,
-                onClick = { onScreenSelected(Screen.Journal) },
-                icon = Icons.Outlined.EditNote,
-                selectedIcon = Icons.Filled.EditNote,
-                label = "JOURNAL"
-            )
-            
-            // Focus (Center - Primary Action)
-            BottomNavItem(
-                selected = currentScreen == Screen.Focus,
-                onClick = { onScreenSelected(Screen.Focus) },
-                icon = Icons.Outlined.Timer,
-                selectedIcon = Icons.Filled.Timer,
-                label = "FOCUS",
-                isPrimary = true
-            )
-            
-            // Music
-            BottomNavItem(
-                selected = currentScreen == Screen.Music,
-                onClick = { onScreenSelected(Screen.Music) },
-                icon = Icons.Outlined.LibraryMusic,
-                selectedIcon = Icons.Filled.LibraryMusic,
-                label = "MUSIC"
-            )
-            
-            // Profile
-            BottomNavItem(
-                selected = currentScreen == Screen.Profile,
-                onClick = { onScreenSelected(Screen.Profile) },
-                icon = Icons.Outlined.Fingerprint,
-                selectedIcon = Icons.Filled.Fingerprint,
-                label = "PROFILE"
-            )
-        }
-    }
+    PlaceholderScreen(
+        icon = Icons.Outlined.Fingerprint,
+        title = "Digital Identity",
+        desc = "Settings • AI Config"
+    )
 }
 
 @Composable
-fun RowScope.BottomNavItem(
-    selected: Boolean,
-    onClick: () -> Unit,
+fun PlaceholderScreen(
     icon: ImageVector,
-    selectedIcon: ImageVector,
-    label: String,
-    isPrimary: Boolean = false
+    title: String,
+    desc: String
 ) {
-    NavigationBarItem(
-        selected = selected,
-        onClick = onClick,
-        icon = {
-            Icon(
-                imageVector = if (selected) selectedIcon else icon,
-                contentDescription = label,
-                modifier = Modifier.size(if (isPrimary) 26.dp else 24.dp)
-            )
-        },
-        label = {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
-                letterSpacing = MaterialTheme.typography.labelSmall.letterSpacing
-            )
-        },
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.primary,
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            indicatorColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-        )
-    )
-}
-
-// === 占位屏幕 (Phase 2/3 待实现) ===
-@Composable
-fun LibraryPlaceholder() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -431,95 +216,12 @@ fun LibraryPlaceholder() {
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.AutoStories,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "Knowledge Library",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Coming in Phase 2\nRSS Feeds • Web Clippings • Notes",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-fun MusicPlaceholder() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.LibraryMusic,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "The Sonic Aura",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Coming in Phase 3\nNetease Cloud Music Integration",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-fun ProfilePlaceholder() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Fingerprint,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
-            )
-            Text(
-                text = "Digital Identity",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = "Settings • Integrations • AI Config",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(icon, contentDescription = null, modifier = Modifier.size(64.dp))
+            Spacer(Modifier.height(16.dp))
+            Text(title, style = MaterialTheme.typography.titleLarge)
+            Spacer(Modifier.height(8.dp))
+            Text(desc, textAlign = TextAlign.Center)
         }
     }
 }
