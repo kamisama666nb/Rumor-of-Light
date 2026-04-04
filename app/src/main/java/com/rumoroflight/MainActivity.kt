@@ -27,8 +27,9 @@ import com.rumoroflight.ui.components.PomodoroScreen
 import com.rumoroflight.ui.components.JournalScreen
 
 class MainActivity : ComponentActivity() {
-    private val timerViewModel = TimerViewModel()
-
+    private val timerViewModel by lazy { 
+    TimerViewModel(application) 
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
