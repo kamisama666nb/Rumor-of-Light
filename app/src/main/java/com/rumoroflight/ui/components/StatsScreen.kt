@@ -1,5 +1,7 @@
 package com.rumoroflight.ui.components
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,13 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * 统计屏幕 - BottomSheet
- * 
- * 显示:
- *  - 今日完成数 vs 目标
- *  - 本周趋势图
- *  - 总体统计
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatsSheet(
     stats: PomodoroRepository.PomodoroStats,
@@ -150,7 +145,7 @@ fun TodayGoalCard(completed: Int, goal: Int) {
                 
                 Box(contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
-                        progress = { progress },
+                        progress = progress,
                         modifier = Modifier.size(72.dp),
                         strokeWidth = 8.dp,
                         color = MaterialTheme.colorScheme.primary,
@@ -168,7 +163,7 @@ fun TodayGoalCard(completed: Int, goal: Int) {
             Spacer(modifier = Modifier.height(16.dp))
             
             LinearProgressIndicator(
-                progress = { progress },
+                progress = progress,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -194,7 +189,14 @@ fun TodayGoalCard(completed: Int, goal: Int) {
 @Composable
 fun WeeklyChart(history: Map<String, Int>) {
     val maxValue = history.values.maxOrNull()?.toFloat() ?: 1f
-    val sortedHistory = history.toSortedMap().takeLast(7)
+    
+    // 获取最近7天
+    val today = java.time.LocalDate.now()
+    val weekData = (6 downTo 0).map { daysAgo ->
+        val date = today.minusDays(daysAgo.toLong())
+        val dateStr = date.format(java.time.format.DateTimeFormatter.ISO_DATE)
+        dateStr to (history[dateStr] ?: 0)
+    }
     
     Surface(
         shape = RoundedCornerShape(20.dp),
@@ -220,20 +222,25 @@ fun WeeklyChart(history: Map<String, Int>) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.Bottom
             ) {
-                sortedHistory.entries.forEachIndexed { index, entry ->
-                    val dayLabel = java.time.LocalDate.parse(entry.key)
-                        .dayOfWeek.toString().substring(0, 3)
+                weekData.forEach { (dateStr, value) ->
+                    val dayLabel = try {
+                        java.time.LocalDate.parse(dateStr)
+                            .dayOfWeek.toString().substring(0, 3)
+                    } catch (e: Exception) {
+                        "?"
+                    }
+                    
                     val height = if (maxValue > 0) {
-                        (entry.value.toFloat() / maxValue * 120).dp
+                        (value.toFloat() / maxValue * 120).dp
                     } else {
                         0.dp
                     }
                     
                     BarItem(
                         label = dayLabel,
-                        value = entry.value,
+                        value = value,
                         height = height,
-                        color = if (entry.value > 0) {
+                        color = if (value > 0) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.surfaceVariant
