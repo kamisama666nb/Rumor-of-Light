@@ -1,6 +1,6 @@
-package com.rumoroflight.ui.components
-
 @file:OptIn(ExperimentalMaterial3Api::class)
+
+package com.rumoroflight.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
