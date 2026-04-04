@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.RumorOfLight" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 使用系统默认主题 -->
+    </style>
+</resources>
